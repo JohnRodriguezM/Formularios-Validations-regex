@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=¿, initial-scale=1.0">
+    <title>All form</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <form action="" class = "contact-form">
+            <h1>Form validations</h1>
+            <legend>Send us your comments</legend>
+            <label for="">Name:</label>
+            <!-- el atributo title el texto que se le ponga lo saca en sus validaciones, (mensaje de validacion o no) -->
+            <input type="text" name="name" id="name" placeholder="name" title="sólo se acepta letras y espacios en blanco" required autocomplete="off" pattern="^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$">
+            <label for="">E-mail</label>
+            <input type="email" name="email" id="email" placeholder="Email address" autocomplete="off" title=" Email address isn't correct"pattern = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$" required >
+            <!-- asunto -->
+            <input type="text" name="subject" id="" placeholder="Subject" required autocomplete = "off" title = "asunto es requerido">
+            <textarea name="comments" id="comments" cols="25" rows="5" placeholder = "write your message" pattern = "^.{1,255}$"></textarea>
+            <input type="submit" value="Enviar" id = "submit">
+        </form>
+    </main>
+    <footer></footer>
+    <script>
+        const d = document;
+           
+    </script>
+</body>
+</html>
