@@ -39,6 +39,9 @@ input[type="submit"]{
     margin: 20px auto;
     width: 150px;
 }
+input::title{
+    color: yellow;
+}
 input::placeholder,textarea::placeholder{
     padding-top: 5px;
     text-align: center;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,20 +8,30 @@
     <link rel="stylesheet" href="./css/styles.css">
     <title>All form</title>
 </head>
+
 <body>
     <header></header>
     <main>
-        <form action="" class = "contact-form">
-            <h1 style = "margin: 15px auto">Form validations</h1>
-            <legend style = "margin-bottom: 20px;">Send us your comments</legend>
+        <form action="" class="contact-form">
+            <h1 style="margin: 15px auto">Form validations</h1>
+            <legend style="margin-bottom: 20px;">Send us your comments</legend>
             <!-- el atributo title el texto que se le ponga lo saca en sus validaciones, (mensaje de validacion o no) -->
-            <input type="text" name="name" id="name" placeholder="name" title="sólo se acepta letras y espacios en blanco" required autocomplete="off" pattern="^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$">
-            <input type="email" name="email" id="email" placeholder="Email address" autocomplete="off"  required >
+            <!-- se inserta al error del name -->
+            <input type="text" name="name" id="name" placeholder="name"
+                title="sólo se acepta letras y espacios en blanco" required autocomplete="off"
+                pattern="^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$">
+            <!-- se insertar cuando hay error -->
+            <p class="pError none" style="color:red;">El email no es válido</p>
+            <!-- --- -->
+            <input type="email" name="email" id="email" placeholder="Email address" autocomplete="off" required>
             <!-- asunto -->
-            <input type="text" name="subject" id="" placeholder="Subject" required autocomplete = "off" title = "asunto es requerido">
+            <input type="text" name="subject" id="" placeholder="Subject" required autocomplete="off"
+                title="asunto es requerido">
             <!-- el textarea no soporta el atributo pattern para hacer la validación con expresiones regulares, por ende una forma de trabajarlas seria con el creando un data-atributte -->
-            <textarea name="comments" id="comments" cols="25" rows="5" placeholder = "write your message" data-pattern = "^.{1,255}$" title = "No debes pasar de 255 caracteres"></textarea>
-            <input type="submit" value="Enviar" id = "submit">
+            <p class="pErrorT"></p>
+            <textarea name="comments" id="comments" cols="25" rows="5" placeholder="write your message"
+                title="No debes pasar de 255 caracteres"></textarea>
+            <input type="submit" value="Enviar" id="submit">
             <div class="contact-form-loader none">
                 <img src="./loader.gif" alt="">
             </div>
@@ -32,21 +43,32 @@
     <footer></footer>
     <script>
         const d = document;
-        const cositas = d.querySelector('#email');
+        const expresionesRegulares = {
+            nombre: /^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$/,
+            email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        };
+        const textarea = d.querySelector('textarea')
+        const email_Form = d.getElementById('email');
         let main = document.querySelector('main')
-
+        let submit = document.querySelector('#submit');
+        let pError = document.querySelector('.pError');
+        const pErrorT = document.querySelector('.pErrorT')
         const form = d.querySelector('.contact-form')
-        d.getElementById('submit').addEventListener('click',(e)=> {
-            if(!(/^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/.test(cositas.value))){
-                let p = d.createElement('p')
-                p.innerHTML = 'el email no es valido'
-                /*p.style.color = 'red */
-                cositas.insertAdjacentElement('beforebegin',p)
-                setTimeout(()=>{
-                    p.remove()
-                },1200)
+
+        email_Form.addEventListener('change', e => {
+            !expresionesRegulares.email.test(email_Form.value) ? pError.classList.remove('none') : pError
+                .classList.add('none');
+        })
+
+        textarea.addEventListener('change', e => {
+            if (e.target.value.length > 255) {
+                alert(textarea.title)
+                textarea.style.border = '1px solid red'
+            }else{
+                textarea.style.border = '1px solid #ccc'
             }
         })
     </script>
 </body>
+
 </html>
