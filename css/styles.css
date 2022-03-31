@@ -1,0 +1,49 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    user-select: none;
+    scroll-behavior: smooth;
+}
+
+
+body{
+    text-align: center;
+}
+
+form{
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85%;
+    max-width: 500px;
+}
+
+input{
+    height: 32px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+textarea{
+    min-width: 200px;
+    max-width: 100%;
+    min-height: 50px;;
+    max-height: 200px
+}
+input[type="submit"]{
+    cursor: pointer;
+    margin: 20px auto;
+    width: 150px;
+}
+input::placeholder,textarea::placeholder{
+    padding-top: 5px;
+    text-align: center;
+}
+
+.none{
+    display: none;
+}
