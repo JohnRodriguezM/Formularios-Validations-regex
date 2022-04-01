@@ -17,7 +17,8 @@
             <legend style="margin-bottom: 20px;">Send us your comments</legend>
             <!-- el atributo title el texto que se le ponga lo saca en sus validaciones, (mensaje de validacion o no) -->
             <!-- se inserta al error del name -->
-            <input type="text" name="name" id="name" placeholder="name"
+            <p class="pErrorN none" style="color:red;">Sólo se aceptan letras</p>
+            <input type="text" name="name" id="name" placeholder="Name"
                 title="sólo se acepta letras y espacios en blanco" required autocomplete="off"
                 pattern="^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$">
             <!-- se insertar cuando hay error -->
@@ -25,20 +26,23 @@
             <!-- --- -->
             <input type="email" name="email" id="email" placeholder="Email address" autocomplete="off" required>
             <!-- asunto -->
-            <input type="text" name="subject" id="" placeholder="Subject" required autocomplete="off"
+            <!-- p error del subject -->
+            <p class="pErrorS none" style="color:red;">Máximo 60 caracteres</p>
+            <input type="text" name="subject" id="subject" placeholder="Subject" required autocomplete="off"
                 title="asunto es requerido">
             <!-- el textarea no soporta el atributo pattern para hacer la validación con expresiones regulares, por ende una forma de trabajarlas seria con el creando un data-atributte -->
-            <p class="pErrorT"></p>
+            <p class="pErrorT none" style="margin-bottom: 5px; color: red;"></p>
             <textarea name="comments" id="comments" cols="25" rows="5" placeholder="write your message"
-                title="No debes pasar de 255 caracteres"></textarea>
+                title="Máximo 255 caracteres"></textarea>
             <input type="submit" value="Enviar" id="submit">
-            <div class="contact-form-loader none">
-                <img src="./loader.gif" alt="">
-            </div>
-            <div class="contact-form-response none">
-                <p>los datos han sido enviados</p>
-            </div>
+            
         </form>
+        <div class="contact-form-loader none">
+            <img id = "loader" src="./loader.gif" alt="">
+        </div>
+        <div class="contact-form-response none">
+            <p style = "margin-top:15px">Los datos han sido enviados</p>
+        </div>
     </main>
     <footer></footer>
     <script>
@@ -46,28 +50,99 @@
         const expresionesRegulares = {
             nombre: /^[A-Za-zÑnÁáÉéÍíÓóÚú\s]+$/,
             email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+            subject: /^.{1,60}$/,
         };
-        const textarea = d.querySelector('textarea')
-        const email_Form = d.getElementById('email');
-        let main = document.querySelector('main')
-        let submit = document.querySelector('#submit');
-        let pError = document.querySelector('.pError');
-        const pErrorT = document.querySelector('.pErrorT')
+        const main = d.querySelector('main')
         const form = d.querySelector('.contact-form')
+        const pError = d.querySelector('.pError');
+        const pErrorT = d.querySelector('.pErrorT')
+        const pErrorS = d.querySelector('.pErrorS')
+        const pErrorN = d.querySelector('.pErrorN')
+        const name_Form = d.getElementById('name');
+        const email_Form = d.getElementById('email');
+        const subject_Form = d.getElementById('subject');
+        const textarea = d.querySelector('textarea')
+        const submit = d.getElementById('submit');
 
-        email_Form.addEventListener('change', e => {
-            !expresionesRegulares.email.test(email_Form.value) ? pError.classList.remove('none') : pError
-                .classList.add('none');
+        // luego del envío del formulario
+
+        const loader = d.querySelector('.contact-form-loader')
+        const enviado = d.querySelector('.contact-form-response')
+
+        const eliminar = (el, elRemove) => {
+            if (el.value.length === 0) {
+                elRemove.classList.add('none')
+            }
+        }
+
+        const handlerIf = (elObjeto, el, elRemove) => {
+            !elObjeto.test(el.value) ? elRemove.classList.remove('none') : elRemove.classList.add('none');
+        }
+        // manejo de errores del nombre
+        name_Form.addEventListener('change', e => {
+            handlerIf(expresionesRegulares.nombre, name_Form, pErrorN)
+            eliminar(name_Form, pErrorN)
         })
 
+        // manejo de errores del email
+        email_Form.addEventListener('change', e => {
+            handlerIf(expresionesRegulares.email, email_Form, pError)
+            eliminar(email_Form, pError)
+        })
+        // manejo de errores del subject
+        subject_Form.addEventListener('change', e => {
+            handlerIf(expresionesRegulares.subject, subject_Form, pErrorS)
+            eliminar(subject_Form, pErrorS)
+        })
+
+        // manejo de errores en el textarea
         textarea.addEventListener('change', e => {
             if (e.target.value.length > 255) {
-                alert(textarea.title)
+                pErrorT.classList.remove('none')
+                pErrorT.innerHTML = `${textarea.title}, llevas ${e.target.value.length}`
                 textarea.style.border = '1px solid red'
-            }else{
+            } else {
                 textarea.style.border = '1px solid #ccc'
+                pErrorT.classList.add('none')
             }
         })
+// Sincere@april.biz
+
+        d.addEventListener('submit', e =>{
+            if(e.target === form){
+                e.preventDefault();
+               /*  async function fetchData(){
+                    try{
+                        let get = await fetch('https://jsonplaceholder.typicode.com/users')
+                        let response = await get.json()
+                        // filtra todo el elemento en el que el email sea igual al del formulario, sino no me regresa un array vacio
+                        let data = await response.filter(el => el.email === email_Form.value)
+                        console.log(data)
+                    }catch(err){
+                        console.log(err)
+                    }
+
+                    }
+                    fetchData() */
+                    // simulacion del envío de datos con el setTimeout aplicado al loader
+                    loader.classList.remove('none');
+                    form.classList.add('none');
+                    setTimeout(()=> {
+                        loader.classList.add('none')
+                        form.classList.remove('none')
+                    },2000)
+                    setTimeout(()=> {
+                        enviado.classList.remove('none')
+                        setTimeout(()=> {
+                            enviado.classList.add('none')
+                        },2500)
+                    },2500)
+                    form.reset()
+
+            }
+        }/* ,{
+            once: true,
+        } */)
     </script>
 </body>
 
